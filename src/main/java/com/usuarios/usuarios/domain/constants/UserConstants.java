@@ -10,6 +10,7 @@ package com.usuarios.usuarios.domain.constants;
  */
 public class UserConstants {
     public static final String ROLE_OWNER = "Propietario";
+    public static final String ROLE_ADMIN = "Administrador";
     public static final Long ROLE_OWNER_ID = 1L;
     public static final int MINIMUM_AGE = 18;
     public static final String DATE_FORMAT = "yyyy-MM-dd";

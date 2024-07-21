@@ -28,18 +28,6 @@ public class UserController {
     
     private UserService userService;
     
-    @GetMapping
-    public List<UserModel> getAll()
-    {
-        return userService.getUsers();
-    }
-    
-    @GetMapping("/{id}")
-    public Optional<UserModel> getById(Long id)
-    {
-        return userService.getUser(id);
-    }
-    
     @GetMapping("/owner/{id}")
     public boolean getOwnerById(@PathVariable Long id)
     {

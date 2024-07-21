@@ -5,12 +5,14 @@
 package com.usuarios.usuarios.application.service;
 
 import com.usuarios.usuarios.domain.constants.UserConstants;
+import com.usuarios.usuarios.domain.model.RolModel;
 import com.usuarios.usuarios.domain.model.UserModel;
+import com.usuarios.usuarios.domain.repositories.IRolRepository;
 import com.usuarios.usuarios.domain.repositories.IUserRepository;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,26 +22,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @author usuario
  */
 @Service
+@RequiredArgsConstructor
 public class UserService {
     @Autowired
     private IUserRepository userRepository;
+    private final IRolRepository rolRepository;
     
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
-    public List<UserModel> getUsers()
-    {
-        return userRepository.findAll();
-    }
-    
-    public Optional<UserModel> getUser(Long id)
-    {
-        return userRepository.findById(id);
-    }
-    
     public boolean getOwnerById(Long id)
     {
         Optional<UserModel> user = userRepository.findById(id);
+        Optional<RolModel> rolAdmin = rolRepository.findByNombre(UserConstants.ROLE_OWNER);
         
         if(user == null)
         {
@@ -47,7 +42,7 @@ public class UserService {
         }
         else
         {
-            return UserConstants.ROLE_OWNER_ID.equals(user.get().getId_rol().getId());
+            return rolAdmin.get().getId().equals(user.get().getId_rol().getId());
         }
     }
     
