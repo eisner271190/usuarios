@@ -30,7 +30,6 @@ public class UserService {
     public boolean getOwnerById(Long id)
     {
         Optional<UserModel> user = userRepository.findById(id);
-        Optional<RolModel> rolAdmin = rolRepository.findByNombre(UserConstants.ROLE_OWNER);
         
         if(user == null)
         {
@@ -38,32 +37,35 @@ public class UserService {
         }
         else
         {
-            return rolAdmin.get().getId().equals(user.get().getId_rol().getId());
+            return validateRol(user.get().getId_rol().getId(), UserConstants.ROLE_OWNER);
         }
-    }
-    
-    public void saveUser(UserModel user)
-    {
-        userRepository.save(user);
     }
     
     public void saveAccountOwner(UserModel user)
     {
+        Optional<RolModel> role = rolRepository.findByNombre(UserConstants.ROLE_OWNER);
+        
         if(!isAdult(user.getFecha_nacimiento()))
         {
             throw new IllegalArgumentException("{validation.date.isadult}");
         }
         
-        user.getId_rol().setId(UserConstants.ROLE_OWNER_ID);
+        user.getId_rol().setId(role.get().getId());
         
         user.setClave(bCryptPasswordEncoder.encode(user.getClave()));
         
         userRepository.save(user);
     }
     
-    public void deleteUser(Long id)
+    public void saveAccountEmployee(UserModel user)
     {
-        userRepository.deleteById(id);
+        Optional<RolModel> role = rolRepository.findByNombre(UserConstants.ROLE_EMPLOYEE);
+        
+        user.getId_rol().setId(role.get().getId());
+        
+        user.setClave(bCryptPasswordEncoder.encode(user.getClave()));
+        
+        userRepository.save(user);
     }
     
     private boolean isAdult(Date fechaNacimiento) {
@@ -75,5 +77,11 @@ public class UserService {
         int currentYear = cal.get(Calendar.YEAR);
         
         return currentYear - yearOfBirth >= UserConstants.MINIMUM_AGE;
+    }
+    
+    private boolean validateRol(Long idRol, String rolName)
+    {
+        Optional<RolModel> role = rolRepository.findByNombre(rolName);
+        return role == null ? false : role.get().getId().equals(idRol);
     }
 }

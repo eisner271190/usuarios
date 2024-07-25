@@ -37,4 +37,10 @@ public class UserController {
     {
         userService.saveAccountOwner(user);
     }
+    
+    @PostMapping("/owner/saveAccountEmployee")
+    public void saveAccountEmployee(@RequestBody UserModel user)
+    {
+        userService.saveAccountEmployee(user);
+    }
 }
