@@ -6,10 +6,8 @@ package com.usuarios.usuarios.infraestructure.controllers;
 
 import com.usuarios.usuarios.application.service.UserService;
 import com.usuarios.usuarios.domain.model.UserModel;
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(path = "api/v1/users")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
     
-    private UserService userService;
+    private final UserService userService;
     
     @GetMapping("/owner/{id}")
     public boolean getOwnerById(@PathVariable Long id)
@@ -34,21 +32,9 @@ public class UserController {
         return userService.getOwnerById(id);
     }
     
-    @PostMapping
-    public void save(@RequestBody UserModel user)
-    {
-        userService.saveUser(user);
-    }
-    
-    @PostMapping("/saveAccountOwner")
+    @PostMapping("/admin/saveAccountOwner")
     public void saveAccountOwner(@RequestBody UserModel user)
     {
         userService.saveAccountOwner(user);
-    }
-    
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id)
-    {
-        userService.deleteUser(id);
     }
 }

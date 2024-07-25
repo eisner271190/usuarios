@@ -5,6 +5,7 @@
 package com.usuarios.usuarios.domain.repositories;
 
 import com.usuarios.usuarios.domain.model.UserModel;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IUserRepository extends JpaRepository<UserModel, Long> {
-    
+    Optional<UserModel> findByCorreo(String email);
 }

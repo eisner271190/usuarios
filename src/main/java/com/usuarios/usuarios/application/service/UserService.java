@@ -13,9 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
@@ -24,12 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
     private final IRolRepository rolRepository;
-    
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder bCryptPasswordEncoder;
     
     public boolean getOwnerById(Long id)
     {
