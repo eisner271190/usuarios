@@ -31,33 +31,40 @@ public class UserService {
     {
         Optional<UserModel> user = userRepository.findById(id);
         
-        if(user == null)return false;
+        if(user.isEmpty())return false;
         
         return validateRol(user.get().getId_rol().getId(), UserConstants.ROLE_OWNER);
     }
     
-    public void saveAccountOwner(UserModel user)
+    public void saveAccountOwner(UserModel user) throws Exception
     {
         if(!isAdult(user.getFecha_nacimiento())) throw new IllegalArgumentException("{validation.date.isadult}");
         
         saveAccount(user, UserConstants.ROLE_OWNER);
     }
     
-    public void saveAccountEmployee(UserModel user)
+    public void saveAccountEmployee(UserModel user) throws Exception
     {
         saveAccount(user, UserConstants.ROLE_EMPLOYEE);
     }
     
-    public void saveAccountClient(UserModel user)
+    public void saveAccountClient(UserModel user) throws Exception
     {
         saveAccount(user, UserConstants.ROLE_CLIENT);
     }
     
-    private void saveAccount(UserModel user, String roleName)
+    public void saveAccountAdmin(UserModel user) throws Exception
+    {
+        saveAccount(user, UserConstants.ROLE_ADMIN);
+    }
+    
+    private void saveAccount(UserModel user, String roleName) throws Exception
     {
         Optional<RolModel> role = rolRepository.findByNombre(roleName);
         
-        user.getId_rol().setId(role.get().getId());
+        if(role.isEmpty()) throw new Exception("{validation.saveAccount.roleNotExist}");
+        
+        user.setId_rol(role.get());
         
         user.setClave(bCryptPasswordEncoder.encode(user.getClave()));
         

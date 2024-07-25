@@ -32,20 +32,26 @@ public class UserController {
     }
     
     @PostMapping("/admin/saveAccountOwner")
-    public void saveAccountOwner(@RequestBody UserModel user)
+    public void saveAccountOwner(@RequestBody UserModel user) throws Exception
     {
         userService.saveAccountOwner(user);
     }
     
     @PostMapping("/owner/saveAccountEmployee")
-    public void saveAccountEmployee(@RequestBody UserModel user)
+    public void saveAccountEmployee(@RequestBody UserModel user) throws Exception
     {
         userService.saveAccountEmployee(user);
     }
     
     @PostMapping("/client/saveAccountClient")
-    public void saveAccountClient(@RequestBody UserModel user)
+    public void saveAccountClient(@RequestBody UserModel user) throws Exception
     {
         userService.saveAccountClient(user);
+    }
+    
+    @PostMapping("/auth/saveAccountAdmin")
+    public void saveAccountAdmin(@RequestBody UserModel user) throws Exception
+    {
+        userService.saveAccountAdmin(user);
     }
 }

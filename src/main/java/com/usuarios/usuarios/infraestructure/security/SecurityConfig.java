@@ -26,12 +26,15 @@ public class SecurityConfig {
             .authorizeHttpRequests(authRequest ->
               authRequest
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/client/crear").permitAll()
-                .requestMatchers("/admin/**").hasRole("Administrador")
-                .requestMatchers("/owner/**").hasRole("Propietario")
+                .requestMatchers("/api/v1/users/auth/**").permitAll()
+                .requestMatchers("/api/v1/users/client/saveAccountClient").permitAll()
+                .requestMatchers("/api/v1/users/admin/**").hasRole("Administrador")
+                .requestMatchers("/api/v1/restaurantes/admin/**").hasRole("Administrador")
+                .requestMatchers("/api/v1/users/owner/**").hasRole("Propietario")
+                .requestMatchers("/api/v1/platos/owner/**").hasRole("Propietario")
                 .anyRequest().authenticated()
             )
-            .sessionManagement(sessionManager-> sessionManager .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(sessionManager -> sessionManager .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
