@@ -7,7 +7,6 @@ package com.usuarios.usuarios.infraestructure.controllers;
 import com.usuarios.usuarios.application.service.UserService;
 import com.usuarios.usuarios.domain.model.UserModel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,5 +41,11 @@ public class UserController {
     public void saveAccountEmployee(@RequestBody UserModel user)
     {
         userService.saveAccountEmployee(user);
+    }
+    
+    @PostMapping("/client/saveAccountClient")
+    public void saveAccountClient(@RequestBody UserModel user)
+    {
+        userService.saveAccountClient(user);
     }
 }

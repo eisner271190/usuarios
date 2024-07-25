@@ -31,35 +31,31 @@ public class UserService {
     {
         Optional<UserModel> user = userRepository.findById(id);
         
-        if(user == null)
-        {
-            return false;
-        }
-        else
-        {
-            return validateRol(user.get().getId_rol().getId(), UserConstants.ROLE_OWNER);
-        }
+        if(user == null)return false;
+        
+        return validateRol(user.get().getId_rol().getId(), UserConstants.ROLE_OWNER);
     }
     
     public void saveAccountOwner(UserModel user)
     {
-        Optional<RolModel> role = rolRepository.findByNombre(UserConstants.ROLE_OWNER);
+        if(!isAdult(user.getFecha_nacimiento())) throw new IllegalArgumentException("{validation.date.isadult}");
         
-        if(!isAdult(user.getFecha_nacimiento()))
-        {
-            throw new IllegalArgumentException("{validation.date.isadult}");
-        }
-        
-        user.getId_rol().setId(role.get().getId());
-        
-        user.setClave(bCryptPasswordEncoder.encode(user.getClave()));
-        
-        userRepository.save(user);
+        saveAccount(user, UserConstants.ROLE_OWNER);
     }
     
     public void saveAccountEmployee(UserModel user)
     {
-        Optional<RolModel> role = rolRepository.findByNombre(UserConstants.ROLE_EMPLOYEE);
+        saveAccount(user, UserConstants.ROLE_EMPLOYEE);
+    }
+    
+    public void saveAccountClient(UserModel user)
+    {
+        saveAccount(user, UserConstants.ROLE_CLIENT);
+    }
+    
+    private void saveAccount(UserModel user, String roleName)
+    {
+        Optional<RolModel> role = rolRepository.findByNombre(roleName);
         
         user.getId_rol().setId(role.get().getId());
         
@@ -68,7 +64,8 @@ public class UserService {
         userRepository.save(user);
     }
     
-    private boolean isAdult(Date fechaNacimiento) {
+    private boolean isAdult(Date fechaNacimiento)
+    {
         Calendar cal = Calendar.getInstance();
         cal.setTime(fechaNacimiento);
         int yearOfBirth = cal.get(Calendar.YEAR);

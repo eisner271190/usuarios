@@ -12,6 +12,7 @@ public class UserConstants {
     public static final String ROLE_OWNER = "Propietario";
     public static final String ROLE_ADMIN = "Administrador";
     public static final String ROLE_EMPLOYEE = "Empleado";
+    public static final String ROLE_CLIENT = "Cliente";
     
     public static final int MINIMUM_AGE = 18;
     public static final String DATE_FORMAT = "yyyy-MM-dd";
