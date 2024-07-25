@@ -2,6 +2,8 @@ package com.usuarios.usuarios.infraestructure.security;
 
 import com.usuarios.usuarios.domain.model.UserModel;
 import com.usuarios.usuarios.domain.repositories.IUserRepository;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +25,11 @@ public class AuthService {
         UserModel user = userRepository.findByCorreo(request.getUsername()).orElseThrow();
         UserDetails userDetails = (UserDetails)user;
         
-        String token = jwtService.getToken(userDetails, user.getId_rol().getNombre());
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role",user.getId_rol().getNombre());
+        claims.put("id_propietario",user.getId());
+        
+        String token = jwtService.getToken(userDetails, claims);
         return AuthResponse.builder()
             .token(token)
             .build();
@@ -39,7 +45,7 @@ public class AuthService {
         userRepository.save(user);
 
         return AuthResponse.builder()
-            .token(jwtService.getToken(user, "Propietario"))
+            .token(jwtService.getToken(user, new HashMap<>()))
             .build();
     }
 }
