@@ -2,13 +2,9 @@ package com.usuarios.usuarios.infraestructure.security;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -22,12 +18,8 @@ public class JwtService {
     private static final String SECRET_KEY="586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
     private final JwtUtils jwtUtils;
 
-    public String getToken(UserDetails user, Map<String,Object> extraClaims) {
-        return getToken(extraClaims, user);
-    }
-
-    private String getToken(Map<String,Object> extraClaims, UserDetails user) {
-        return jwtUtils.createToken(user, extraClaims);
+    public String getToken(UserDetails user, String role) {
+        return jwtUtils.createToken(user, role);
     }
 
     private Key getKey() {

@@ -12,7 +12,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Date;
-import java.util.Map;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -25,7 +24,7 @@ public class JwtUtils {
     private static final String USERGENERATOR="AUTH0JWT-BACKEND";
     public static final long TOKEN_EXPIRATION_TIME = 3_600_000;
 
-    public String createToken(UserDetails user, Map<String,Object> extraClaims)
+    public String createToken(UserDetails user, String role)
     {
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
 
@@ -34,7 +33,7 @@ public class JwtUtils {
                 .withIssuer(USERGENERATOR)
                 .withIssuedAt(new Date())
                 .withSubject(user.getUsername())
-                .withClaim("authorities", "ROLE_Propietario")
+                .withClaim("authorities", "ROLE_" + role)
                 .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME))
                 .sign(algorithm);
 

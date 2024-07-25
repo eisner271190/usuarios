@@ -2,8 +2,6 @@ package com.usuarios.usuarios.infraestructure.security;
 
 import com.usuarios.usuarios.domain.model.UserModel;
 import com.usuarios.usuarios.domain.repositories.IUserRepository;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,15 +23,7 @@ public class AuthService {
         UserModel user = userRepository.findByCorreo(request.getUsername()).orElseThrow();
         UserDetails userDetails = (UserDetails)user;
         
-        Map<String,Object> extraClaims = new HashMap<>();
-        extraClaims.put("ROLE_", user.getId_rol().getNombre());
-        extraClaims.put("role", "ROLE_" + user.getId_rol().getNombre());
-        extraClaims.put("email", user.getCorreo());
-        extraClaims.put("nombre", user.getNombre());
-        extraClaims.put("id", user.getId());
-        extraClaims.put("identificacion", user.getNumero_documento());
-        
-        String token = jwtService.getToken(userDetails, extraClaims);
+        String token = jwtService.getToken(userDetails, user.getId_rol().getNombre());
         return AuthResponse.builder()
             .token(token)
             .build();
@@ -47,11 +37,9 @@ public class AuthService {
         user.setApellido(request.lastname);
 
         userRepository.save(user);
-        
-        Map<String,Object> extraClaims = new HashMap<>();
 
         return AuthResponse.builder()
-            .token(jwtService.getToken(user, extraClaims))
+            .token(jwtService.getToken(user, "Propietario"))
             .build();
     }
 }
