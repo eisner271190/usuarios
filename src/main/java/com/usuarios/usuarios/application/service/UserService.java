@@ -58,7 +58,7 @@ public class UserService {
         saveAccount(user, UserConstants.ROLE_ADMIN);
     }
     
-    private void saveAccount(UserModel user, String roleName) throws Exception
+    public void saveAccount(UserModel user, String roleName) throws Exception
     {
         Optional<RolModel> role = rolRepository.findByNombre(roleName);
         
@@ -86,6 +86,6 @@ public class UserService {
     private boolean validateRol(Long idRol, String rolName)
     {
         Optional<RolModel> role = rolRepository.findByNombre(rolName);
-        return role == null ? false : role.get().getId().equals(idRol);
+        return role.isEmpty() ? false : role.get().getId().equals(idRol);
     }
 }
