@@ -1,6 +1,6 @@
 package com.usuarios.usuarios.infraestructure.security;
 
-import com.usuarios.usuarios.domain.repositories.IUserRepository;
+//import com.usuarios.usuarios.domain.repositories.IUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final IUserRepository userRepository;
+    //private final IUserRepository userRepository;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
@@ -29,7 +29,7 @@ public class ApplicationConfig {
     public AuthenticationProvider authenticationProvider()
     {
         DaoAuthenticationProvider authenticationProvider= new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailService());
+        //authenticationProvider.setUserDetailsService(userDetailService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
@@ -39,10 +39,10 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailService() {
-        return username -> userRepository.findByCorreo(username)
-        .orElseThrow(()-> new UsernameNotFoundException("User not fournd"));
-    }
+//    @Bean
+//    public UserDetailsService userDetailService() {
+//        return username -> userRepository.findByCorreo(username)
+//        .orElseThrow(()-> new UsernameNotFoundException("User not fournd"));
+//    }
 
 }

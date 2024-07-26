@@ -1,4 +1,4 @@
-package com.usuarios.usuarios.domain.model;
+package com.usuarios.usuarios.infraestructure.jpa.entity;
 
 import com.usuarios.usuarios.domain.constants.UserConstants;
 import java.util.Date;
@@ -6,17 +6,17 @@ import jakarta.validation.constraints.*;
 import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import lombok.Data;
-import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
-@Getter
 @Entity
 @Table(name = "user")
-public class UserModel implements UserDetails {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,12 +55,12 @@ public class UserModel implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name = "rol_id", nullable = false)
-    private RolModel id_rol;
+    private RolEntity id_rol;
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();      
-        //return List.of(new SimpleGrantedAuthority((this.getId_rol().getNombre())));
+        return Collections.emptyList();
+      //return List.of(new SimpleGrantedAuthority((this.getId_rol().getNombre())));
     }
     @Override
     public boolean isAccountNonExpired() {

@@ -1,7 +1,7 @@
 package com.usuarios.usuarios.infraestructure.security;
 
 import com.usuarios.usuarios.domain.model.UserModel;
-import com.usuarios.usuarios.domain.repositories.IUserRepository;
+//import com.usuarios.usuarios.domain.repositories.IUserRepository;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,14 +15,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final IUserRepository userRepository;
+    //private final IUserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserModel user = userRepository.findByCorreo(request.getUsername()).orElseThrow();
+        UserModel user = new UserModel();// userRepository.findByCorreo(request.getUsername()).orElseThrow();
         UserDetails userDetails = (UserDetails)user;
         
         Map<String, Object> claims = new HashMap<>();
@@ -42,7 +42,7 @@ public class AuthService {
         user.setNombre(request.getFirstname());
         user.setApellido(request.lastname);
 
-        userRepository.save(user);
+        //userRepository.save(user);
 
         return AuthResponse.builder()
             .token(jwtService.getToken(user, new HashMap<>()))
