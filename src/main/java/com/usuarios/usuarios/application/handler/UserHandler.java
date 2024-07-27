@@ -6,7 +6,7 @@ package com.usuarios.usuarios.application.handler;
 
 import com.usuarios.usuarios.application.dto.UserDTO;
 import com.usuarios.usuarios.application.dto.UserOwnerResponse;
-import com.usuarios.usuarios.application.mapper.UserMapper;
+import com.usuarios.usuarios.application.mapper.IUserMapper;
 import com.usuarios.usuarios.domain.constants.UserConstants;
 import com.usuarios.usuarios.domain.model.RolModel;
 import com.usuarios.usuarios.domain.model.UserModel;
@@ -23,12 +23,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author usuario
  */
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class UserHandler implements IUserHandler {
     private final IUserServicePort userServicePort;
-    private final UserMapper userMapper;
+    private final IUserMapper userMapper;
     private final IRolServicePort rolServicePort;
     private final PasswordEncoder bCryptPasswordEncoder;
+
+    public UserHandler(IUserServicePort userServicePort,
+                       IUserMapper userMapper,
+                       IRolServicePort rolServicePort,
+                       PasswordEncoder bCryptPasswordEncoder) {
+        this.userServicePort = userServicePort;
+        this.userMapper = userMapper;
+        this.rolServicePort = rolServicePort;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
     
     @Override
     public UserOwnerResponse getOwnerById(Long id)

@@ -23,10 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(path = "api/v1/users")
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class UserRestController {
     
     private final IUserHandler userHandler;
+
+    public UserRestController(IUserHandler userHandler) {
+        this.userHandler = userHandler;
+    }
     
     @GetMapping("/owner/{id}")
     public ResponseEntity<UserOwnerResponse> getOwnerById(@PathVariable Long id)

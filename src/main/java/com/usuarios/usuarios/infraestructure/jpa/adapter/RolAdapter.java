@@ -7,7 +7,7 @@ package com.usuarios.usuarios.infraestructure.jpa.adapter;
 import com.usuarios.usuarios.domain.model.RolModel;
 import com.usuarios.usuarios.domain.persistence.IRolPersistenceServicePort;
 import com.usuarios.usuarios.infraestructure.exception.RolNotFountException;
-import com.usuarios.usuarios.infraestructure.jpa.mapper.RolEntityMapper;
+import com.usuarios.usuarios.infraestructure.jpa.mapper.IRolEntityMapper;
 import com.usuarios.usuarios.infraestructure.jpa.repository.IRolRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -15,11 +15,17 @@ import lombok.RequiredArgsConstructor;
  *
  * @author usuario
  */
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class RolAdapter implements IRolPersistenceServicePort {
 
     private final IRolRepository rolRepository;
-    private final RolEntityMapper rolEntityMapper;
+    private final IRolEntityMapper rolEntityMapper;
+
+    public RolAdapter(IRolRepository rolRepository,
+                      IRolEntityMapper rolEntityMapper) {
+        this.rolRepository = rolRepository;
+        this.rolEntityMapper = rolEntityMapper;
+    }
     
     @Override
     public RolModel findByNombre(String nombre) {

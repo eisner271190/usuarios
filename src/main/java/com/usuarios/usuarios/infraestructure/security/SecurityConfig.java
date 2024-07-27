@@ -12,11 +12,17 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          AuthenticationProvider authProvider) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.authProvider = authProvider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
@@ -25,15 +31,16 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authRequest ->
               authRequest
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/v1/users/auth/**").permitAll()
-                .requestMatchers("/api/v1/users/client/saveAccountClient").permitAll()
-                .requestMatchers("/api/v1/users/admin/**").hasRole("Administrador")
-                .requestMatchers("/api/v1/restaurantes/admin/**").hasRole("Administrador")
-                .requestMatchers("/api/v1/users/owner/**").hasRole("Propietario")
-                .requestMatchers("/api/v1/platos/owner/**").hasRole("Propietario")
-                .requestMatchers("/api/v1/restaurantes/owner/**").hasRole("Propietario")
-                .anyRequest().authenticated()
+//                .requestMatchers("/auth/**").permitAll()
+//                .requestMatchers("/api/v1/users/auth/**").permitAll()
+//                .requestMatchers("/api/v1/users/client/saveAccountClient").permitAll()
+//                .requestMatchers("/api/v1/users/admin/**").hasRole("Administrador")
+//                .requestMatchers("/api/v1/restaurantes/admin/**").hasRole("Administrador")
+//                .requestMatchers("/api/v1/users/owner/**").hasRole("Propietario")
+//                .requestMatchers("/api/v1/platos/owner/**").hasRole("Propietario")
+//                .requestMatchers("/api/v1/restaurantes/owner/**").hasRole("Propietario")
+//                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
             .sessionManagement(sessionManager -> sessionManager .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authProvider)

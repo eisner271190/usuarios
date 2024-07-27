@@ -14,11 +14,15 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class JwtService {
 
     private static final String SECRET_KEY="586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
     private final JwtUtils jwtUtils;
+
+    public JwtService(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
 
     public String getToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
@@ -29,9 +33,9 @@ public class JwtService {
         }
         return null;
     }
-    
-    public String getToken(UserDetails user, Map<String, Object> claims) {
-        return jwtUtils.createToken(user, claims);
+
+    public String getToken(String subject, Map<String, Object> claims) {
+        return jwtUtils.createToken(subject, claims);
     }
 
     private Key getKey() {
@@ -63,7 +67,7 @@ public class JwtService {
         final Claims claims=getAllClaims(token);
         return claimsResolver.apply(claims);
     }
-    
+
     public String getClaim(HttpServletRequest request, String keyClaim)
     {
         String token = getToken(request);

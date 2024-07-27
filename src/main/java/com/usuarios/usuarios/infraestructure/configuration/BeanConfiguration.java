@@ -12,8 +12,8 @@ import com.usuarios.usuarios.domain.usecase.RolUseCase;
 import com.usuarios.usuarios.domain.usecase.UserUseCase;
 import com.usuarios.usuarios.infraestructure.jpa.adapter.RolAdapter;
 import com.usuarios.usuarios.infraestructure.jpa.adapter.UserAdapter;
-import com.usuarios.usuarios.infraestructure.jpa.mapper.RolEntityMapper;
-import com.usuarios.usuarios.infraestructure.jpa.mapper.UserEntityMapper;
+import com.usuarios.usuarios.infraestructure.jpa.mapper.IRolEntityMapper;
+import com.usuarios.usuarios.infraestructure.jpa.mapper.IUserEntityMapper;
 import com.usuarios.usuarios.infraestructure.jpa.repository.IRolRepository;
 import com.usuarios.usuarios.infraestructure.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +25,24 @@ import org.springframework.context.annotation.Configuration;
  * @author usuario
  */
 @Configuration
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class BeanConfiguration {
     
     private final IRolRepository rolRepository;
-    private final RolEntityMapper rolEntityMapper;
+    private final IRolEntityMapper rolEntityMapper;
     
     private final IUserRepository userRepository;
-    private final UserEntityMapper userEntityMapper;
+    private final IUserEntityMapper userEntityMapper;
+
+    public BeanConfiguration(IRolRepository rolRepository,
+                             IRolEntityMapper rolEntityMapper,
+                             IUserRepository userRepository,
+                             IUserEntityMapper userEntityMapper) {
+        this.rolRepository = rolRepository;
+        this.rolEntityMapper = rolEntityMapper;
+        this.userRepository = userRepository;
+        this.userEntityMapper = userEntityMapper;
+    }
     
     @Bean
     public IRolPersistenceServicePort rolPersistenceServicePort() {

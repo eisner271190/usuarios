@@ -4,6 +4,7 @@
  */
 package com.usuarios.usuarios.infraestructure.security;
 
+import com.usuarios.usuarios.domain.model.UserModel;
 import org.springframework.stereotype.Component;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -13,7 +14,6 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Date;
 import java.util.Map;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -25,7 +25,7 @@ public class JwtUtils {
     private static final String USERGENERATOR="AUTH0JWT-BACKEND";
     public static final long TOKEN_EXPIRATION_TIME = 3_600_000;
 
-    public String createToken(UserDetails user, Map<String, Object> claims)
+    public String createToken(String subject, Map<String, Object> claims)
     {
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
 
@@ -33,7 +33,7 @@ public class JwtUtils {
         token = JWT.create()
                 .withIssuer(USERGENERATOR)
                 .withIssuedAt(new Date())
-                .withSubject(user.getUsername())
+                .withSubject(subject)
                 .withClaim("authorities", "ROLE_" + claims.get("role"))
                 .withClaim("id_propietario", claims.get("id_propietario").toString())
                 .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME))
@@ -63,7 +63,7 @@ public class JwtUtils {
     public Claim getSpecificClaim(DecodedJWT decodedJWT, String claimName) {
         return decodedJWT.getClaim(claimName);
     }
-    
+
     public String getSpecificClaim(String token, String keyClaim)
     {
         DecodedJWT decodedJWT = validateToken(token);
