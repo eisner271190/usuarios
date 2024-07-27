@@ -16,5 +16,8 @@ public interface IUserEntityMapper {
     @Mapping(source = "id_rol", target = "id_rol")
     UserEntity toEntity(UserModel user);
 
+    @Mapping(source = "correo", target = "username")
+    @Mapping(source = "clave", target = "password")
+    @Mapping(source = "id_rol.nombre", target = "role")
     UserDetailsSecurity toUserDetails(UserEntity user);
 }

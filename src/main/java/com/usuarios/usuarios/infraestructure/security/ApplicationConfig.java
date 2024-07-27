@@ -9,7 +9,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +52,21 @@ public class ApplicationConfig {
     
     @Bean
     public UserDetailsService userDetailService() {
-        return username -> userEntityMapper.toUserDetails(userRepository.findByCorreo(username).orElseThrow(UserNotFountException::new));
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                var result = userRepository.findByCorreo(username);
+                var user = result.get();
+                if (result.isPresent() && user.getCorreo().equals(username)) {
+                    return User.withUsername(user.getCorreo())
+                            .password(user.getClave())
+                            .roles(user.getId_rol().getNombre())
+                            .build();
+                } else {
+                    throw new UsernameNotFoundException("User not found");
+                }
+            }
+        };
+//        return username -> userEntityMapper.toUserDetails(userRepository.findByCorreo(username).orElseThrow(UserNotFountException::new));
     }
 }
