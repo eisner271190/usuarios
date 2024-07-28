@@ -8,8 +8,8 @@ package com.usuarios.usuarios.infraestructure.exception;
  *
  * @author usuario
  */
-public class UserNotFountException extends RuntimeException {
-    public UserNotFountException() {
+public class UserNotFoundException extends RuntimeException {
+    public UserNotFoundException() {
         super();
     }
 }

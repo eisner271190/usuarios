@@ -4,7 +4,6 @@
  */
 package com.usuarios.usuarios.infraestructure.security;
 
-import com.usuarios.usuarios.domain.model.UserModel;
 import org.springframework.stereotype.Component;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

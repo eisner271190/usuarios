@@ -9,8 +9,7 @@ import com.usuarios.usuarios.domain.persistence.IUserPersistenceServicePort;
 import com.usuarios.usuarios.infraestructure.jpa.entity.UserEntity;
 import com.usuarios.usuarios.infraestructure.jpa.mapper.IUserEntityMapper;
 import com.usuarios.usuarios.infraestructure.jpa.repository.IUserRepository;
-import com.usuarios.usuarios.infraestructure.exception.UserNotFountException;
-import lombok.RequiredArgsConstructor;
+import com.usuarios.usuarios.infraestructure.exception.UserNotFoundException;
 
 import java.util.Optional;
 
@@ -33,7 +32,7 @@ public class UserAdapter implements IUserPersistenceServicePort {
     @Override
     public UserModel findByCorreo(String email) {
         return userEntityMapper.toModel(userRepository.findByCorreo(email)
-                .orElseThrow(UserNotFountException::new));
+                .orElseThrow(UserNotFoundException::new));
     }
     
     @Override
@@ -46,6 +45,6 @@ public class UserAdapter implements IUserPersistenceServicePort {
     @Override
     public UserModel findById(Long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
-        return userEntityMapper.toModel(userEntity.orElseThrow(UserNotFountException::new));
+        return userEntityMapper.toModel(userEntity.orElseThrow(UserNotFoundException::new));
     }
 }

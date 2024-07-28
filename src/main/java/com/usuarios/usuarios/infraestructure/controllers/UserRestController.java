@@ -53,14 +53,16 @@ public class UserRestController {
     }
     
     @PostMapping("/client/saveAccountClient")
-    public void saveAccountClient(@RequestBody UserDTO user)
+    public ResponseEntity<Void> saveAccountClient(@RequestBody UserDTO user)
     {
         userHandler.saveAccountClient(user);
+        return ResponseEntity.noContent().build();
     }
     
     @PostMapping("/auth/saveAccountAdmin")
-    public void saveAccountAdmin(@RequestBody UserDTO user)
+    public ResponseEntity<Void> saveAccountAdmin(@RequestBody UserDTO user)
     {
         userHandler.saveAccountAdmin(user);
+        return ResponseEntity.noContent().build();
     }
 }

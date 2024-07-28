@@ -1,6 +1,5 @@
 package com.usuarios.usuarios.infraestructure.security;
 
-import com.usuarios.usuarios.infraestructure.exception.UserNotFountException;
 import com.usuarios.usuarios.infraestructure.jpa.mapper.IUserEntityMapper;
 import com.usuarios.usuarios.infraestructure.jpa.repository.IUserRepository;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 //@RequiredArgsConstructor
